@@ -65,7 +65,7 @@ jobs:
             # 3. docker-compose.yml 파일 전송 및 설정 적용
             if [ ! -f /home/ec2-user/myproject/docker-compose.yml ]; then
               echo "Uploading docker-compose.yml to EC2"
-              scp -i ~/.ssh/id_rsa docker-compose.yml ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/myproject/docker-compose.yml
+              scp -i ~/.ssh/id_rsa $GITHUB_WORKSPACE/docker-compose.yml ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/myproject/docker-compose.yml
             fi
 
             # 4. 최신 이미지를 pull하고 Docker Compose 재실행
