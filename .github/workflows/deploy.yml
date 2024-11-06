@@ -24,8 +24,8 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t your-dockerhub-username/spring-app:latest .
-          docker push your-dockerhub-username/spring-app:latest
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/spring-app:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/spring-app:latest
 
   deploy:
     needs: build-and-push
