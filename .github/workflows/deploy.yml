@@ -62,14 +62,23 @@ jobs:
               sudo chown -R 1000:1000 ${{ secrets.MYSQL_DATA_PATH }}
             fi
 
-            # 3. docker-compose.yml 파일 전송 및 설정 적용
+            # 3. docker-compose.yml 파일 전송
             if [ ! -f /home/ec2-user/myproject/docker-compose.yml ]; then
               echo "Uploading docker-compose.yml to EC2"
               scp -i ~/.ssh/id_rsa $GITHUB_WORKSPACE/docker-compose.yml ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/myproject/docker-compose.yml
             fi
 
             # 4. 최신 이미지를 pull하고 Docker Compose 재실행
-            cd /home/ec2-user/myproject
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} << EOF
+              export MYSQL_IMAGE=${{ secrets.MYSQL_IMAGE }}
+              export MYSQL_CONTAINER_NAME=${{ secrets.MYSQL_CONTAINER_NAME }}
+              export MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+              export MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }}
+              export MYSQL_USER=${{ secrets.MYSQL_USER }}
+              export MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+              export MYSQL_DATA_PATH=${{ secrets.MYSQL_DATA_PATH }}
+            
+              cd /home/ec2-user/myproject
+              docker-compose pull
+              docker-compose down
+              docker-compose up -d
