@@ -24,7 +24,7 @@ public class User {
     @Column(unique = true, nullable = false, length = 100)
     private String email; // 이메일
 
-    private String profileImageUrl; // 프로필 이미지 URL
+    private String password; // 프로필 이미지 URL
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -33,18 +33,13 @@ public class User {
     @Column(updatable = false)
     private LocalDateTime createdAt; // 생성 날짜
 
-    @ManyToOne(fetch = FetchType.LAZY) // Lazy Loading 적용
-    @JoinColumn(name = "p_id", nullable = false)
-    private Provider provider; // 인증 방식
-
     // 주요 데이터만 설정하는 생성자 제공
     @Builder
-    public User(String name, String email, String profileImageUrl, Role role, Provider provider) {
+    public User(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
-        this.profileImageUrl = profileImageUrl;
+        this.password = password;
         this.role = role;
-        this.provider = provider;
         this.createdAt = LocalDateTime.now(); // 생성 시간 자동 설정
     }
 }
