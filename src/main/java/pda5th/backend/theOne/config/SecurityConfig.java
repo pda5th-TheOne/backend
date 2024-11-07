@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화 (JWT 사용 시 필요 없음)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화 (Stateless)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/authenticate", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // 인증 필요 없는 경로 설정
+                        .requestMatchers("/authenticate", "/swagger-ui/**", "/v3/api-docs/**", "/api/auth/login", "/api/users/signup").permitAll() // 인증 필요 없는 경로 설정
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터를 인증 필터 전에 추가
@@ -42,10 +42,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager(); // AuthenticationManager 빈 등록
-    }
-
-    @Bean
-    public CustomUserDetailsService userDetailsService() {
-        return customUserDetailsService; // CustomUserDetailsService를 명시적으로 빈으로 등록
     }
 }
