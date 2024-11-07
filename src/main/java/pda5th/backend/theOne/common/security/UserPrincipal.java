@@ -21,7 +21,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null; // 비밀번호 필드가 없다면 null 반환
+        return user.getPassword();
     }
 
     @Override
