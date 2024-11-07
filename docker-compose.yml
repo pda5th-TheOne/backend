@@ -17,6 +17,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - backend_network
 
   app:
     image: ${APP_IMAGE}
@@ -34,3 +36,9 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    external: true
