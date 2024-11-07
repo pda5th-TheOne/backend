@@ -1,5 +1,5 @@
 # 1단계: 빌드 단계
-FROM gradle:7.6-jdk17 AS builder
+FROM gradle:8.3-jdk17 AS builder
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -8,17 +8,17 @@ WORKDIR /app
 COPY build.gradle settings.gradle ./
 COPY gradle gradle
 
-# 의존성 미리 다운로드
-RUN gradle build -x test --no-daemon || return 0
+# 의존성 미리 다운로드 (테스트 제외)
+RUN gradle build --no-daemon -x test || return 0
 
 # 전체 소스 코드 복사
 COPY . .
 
 # 프로젝트 빌드 (Spring Boot 프로젝트의 jar 파일 생성)
-RUN ./gradlew bootJar -x test --no-daemon
+RUN ./gradlew bootJar --no-daemon -x test
 
 # 2단계: 실행 단계
-FROM openjdk:17-jdk-slim
+FROM openjdk:17-slim
 
 # 환경 변수 설정 (필요 시 PORT 환경 변수 설정)
 ENV PORT=8080
