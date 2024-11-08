@@ -2,7 +2,7 @@ package pda5th.backend.theOne.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tils")
@@ -21,9 +21,9 @@ public class TIL {
 
     private String link; // TIL 링크
 
-    private LocalDate createdAt; // 생성 날짜
+    private LocalDateTime createdAt; // 생성 날짜
 
-    private LocalDate updatedAt; // 수정 날짜
+    private LocalDateTime updatedAt; // 수정 날짜
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -32,4 +32,14 @@ public class TIL {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private DailyBoard dailyBoard; // 게시판 ID 참조
+
+    @Builder
+    public TIL(String title, String link, User user) {
+        this.title = title;
+        this.link = link;
+        this.user = user;
+        this.createdAt = LocalDateTime.now(); // 생성 시간 자동 설정
+        this.updatedAt = LocalDateTime.now(); // 생성 시간 자동 설정
+    }
+
 }
