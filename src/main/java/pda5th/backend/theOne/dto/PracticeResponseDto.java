@@ -9,14 +9,16 @@ public record PracticeResponseDto(
         String answer,
         List<UserPracticeDto> usersPractices
 ) {
-    public static PracticeResponseDto fromUsersPractices(List<pda5th.backend.theOne.entity.UsersPractices> usersPractices) {
-        var first = usersPractices.get(0);
+    // Practice 엔티티와 UsersPractices 리스트를 활용하여 DTO를 생성하는 메서드
+    public static PracticeResponseDto fromPracticeAndUsersPractices(
+            pda5th.backend.theOne.entity.Practice practice,
+            List<pda5th.backend.theOne.entity.UsersPractices> usersPractices) {
 
         return new PracticeResponseDto(
-                first.getPractice().getId(),
-                first.getPractice().getTitle(),
-                first.getPractice().getAssignment(),
-                first.getPractice().getAnswer(),
+                practice.getId(),
+                practice.getTitle(),
+                practice.getAssignment(),
+                practice.getAnswer(),
                 usersPractices.stream()
                         .map(UserPracticeDto::fromEntity)
                         .toList()
