@@ -16,7 +16,7 @@ public interface UsersPracticesRepository extends JpaRepository<UsersPractices, 
             "WHERE p.id = :practiceId")
     List<UsersPractices> findUsersPracticesByPracticeId(@Param("practiceId") Integer practiceId);
 
-    // 파라미터 이름 및 @Param 어노테이션 수정
+    // 제출완료 취소 버튼 누르는 경우, practiceId, userId 둘 다 같은 값을 찾아줌
     @Query("SELECT up FROM UsersPractices up " +
             "JOIN FETCH up.practice p " +
             "JOIN FETCH up.user u " +
