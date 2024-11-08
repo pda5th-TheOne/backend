@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pda5th.backend.theOne.dto.PracticeResponseDto;
 import pda5th.backend.theOne.entity.Practice;
+import pda5th.backend.theOne.entity.User;
 import pda5th.backend.theOne.entity.UsersPractices;
 import pda5th.backend.theOne.repository.PracticeRepository;
 import pda5th.backend.theOne.repository.UsersPracticesRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -48,4 +50,20 @@ public class PracticeService {
         practice.setAnswer(newAnswer);
         return practice.getAnswer();
     }
+
+    @Transactional
+    public String createSubmitUser(Integer id, User user) {
+        Practice practice = practiceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Practice not found with id: " + id));
+
+        UsersPractices newUsersPractices = UsersPractices.builder()
+                .practice(practice)
+                .user(user)
+                .createdAt(LocalDate.now())
+                .build();
+
+        usersPracticesRepository.save(newUsersPractices);
+        return user.getName();
+    }
+
 }

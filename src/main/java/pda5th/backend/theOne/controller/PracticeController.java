@@ -39,13 +39,14 @@ public class PracticeController {
         return ResponseEntity.ok("updated answer: " + updatedAnswer);
     }
 
-//    @PutMapping("{id}/users_practices")
-//    public ResponseEntity<String> createUser(
-//            @PathVariable Integer id,
-//            @AuthenticationPrincipal UserPrincipal userPrincipal) {
-//
-//        User user = userPrincipal.getUser();
-//
-//        return ResponseEntity.ok("updated answer: ");
-//    }
+    @PostMapping("{id}/users_practices")
+    public ResponseEntity<String> createUser(
+            @PathVariable Integer id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        User user = userPrincipal.getUser();
+        String submitUserName = practiceService.createSubmitUser(id, user);
+
+        return ResponseEntity.ok("submit user: " + submitUserName);
+    }
 }
