@@ -1,4 +1,6 @@
 package pda5th.backend.theOne.dto;
 
-public record DailyBoardCreateRequest(String createdAt, String topic) {
+import java.time.LocalDate;
+
+public record DailyBoardCreateRequest(LocalDate createdAt, String topic) {
 }
