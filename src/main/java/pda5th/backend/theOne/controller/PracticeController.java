@@ -17,6 +17,7 @@ public class PracticeController {
     private final PracticeService practiceService;
 
     @GetMapping("/{id}")
+    @Operation(summary = "실습에 대한 내용 GET", description = "(문제, 모범답안, 제출한 유저 ... )")
     public ResponseEntity<PracticeResponseDto> getPracticeDetail(@PathVariable Integer id) {
         PracticeResponseDto response = practiceService.getPracticeDetail(id);
         return ResponseEntity.ok(response);

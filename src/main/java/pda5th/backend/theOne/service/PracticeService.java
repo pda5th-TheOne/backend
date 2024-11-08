@@ -20,13 +20,16 @@ public class PracticeService {
     private final UsersPracticesRepository usersPracticesRepository;
 
     public PracticeResponseDto getPracticeDetail(Integer id) {
-        List<UsersPractices> usersPractices = usersPracticesRepository.findUsersPracticesByPracticeId(id);
+        // 1. Practice 엔티티 조회
+        Practice practice = practiceRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Practice not found with id: " + id));
 
-        if (usersPractices.isEmpty()) {
-            throw new RuntimeException("Practice not found with id " + id);
-        }
+        // 2. Practice에 연결된 UsersPractices를 조회 (Fetch Join 활용)
+        List<UsersPractices> usersPracticesList = usersPracticesRepository.findUsersPracticesByPracticeId(practice.getId());
 
-        return PracticeResponseDto.fromUsersPractices(usersPractices);
+        // 3. Practice와 UsersPractices 정보를 기반으로 PracticeResponseDto 생성
+        // UsersPractices가 비어있으면 빈 리스트를 반환
+        return PracticeResponseDto.fromPracticeAndUsersPractices(practice, usersPracticesList);
     }
 
     @Transactional
