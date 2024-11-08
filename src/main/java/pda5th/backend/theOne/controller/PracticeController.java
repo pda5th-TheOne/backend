@@ -2,11 +2,11 @@ package pda5th.backend.theOne.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import pda5th.backend.theOne.common.security.UserPrincipal;
 import pda5th.backend.theOne.dto.PracticeResponseDto;
+import pda5th.backend.theOne.entity.User;
 import pda5th.backend.theOne.service.PracticeService;
 
 @RestController
@@ -20,4 +20,32 @@ public class PracticeController {
         PracticeResponseDto response = practiceService.getPracticeDetail(id);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}/assignment")
+    public ResponseEntity<String> updateAssignment(
+            @PathVariable Integer id,
+            @RequestBody String newAssignment) {
+        String updatedAssignment = practiceService.updateAssignment(id, newAssignment);
+
+        return ResponseEntity.ok("Updated assignment: " + updatedAssignment);
+    }
+
+    @PutMapping("{id}/answer")
+    public ResponseEntity<String> updateAnswer(
+            @PathVariable Integer id,
+            @RequestBody String newAnswer) {
+        String updatedAnswer = practiceService.updateAnswer(id, newAnswer);
+
+        return ResponseEntity.ok("updated answer: " + updatedAnswer);
+    }
+
+//    @PutMapping("{id}/users_practices")
+//    public ResponseEntity<String> createUser(
+//            @PathVariable Integer id,
+//            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+//
+//        User user = userPrincipal.getUser();
+//
+//        return ResponseEntity.ok("updated answer: ");
+//    }
 }
