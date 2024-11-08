@@ -47,7 +47,10 @@ public class PracticeService {
         Practice practice = practiceRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Practice not found with id: " + id));
 
+        // answer 필드 업데이트
         practice.setAnswer(newAnswer);
+
+        // 업데이트 된 answer 값 반환
         return practice.getAnswer();
     }
 
@@ -56,13 +59,17 @@ public class PracticeService {
         Practice practice = practiceRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Practice not found with id: " + id));
 
+        // practice와 user table을 이용해서 users_practices table 생성
         UsersPractices newUsersPractices = UsersPractices.builder()
                 .practice(practice)
                 .user(user)
                 .createdAt(LocalDate.now())
                 .build();
 
+        // 저장
         usersPracticesRepository.save(newUsersPractices);
+
+        // 해당 user Name 반환
         return user.getName();
     }
 
