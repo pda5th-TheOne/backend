@@ -1,6 +1,7 @@
 package pda5th.backend.theOne.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +26,9 @@ public class DailyBoardController {
     }
 
     @GetMapping
-    public List<DailyBoardDetails> getAllBoards() {
-        return dailyBoardService.getAllBoardDetails();
+    public List<DailyBoardDetails> getTop3Boards(@RequestParam(defaultValue = "0") int page) {
+
+        return dailyBoardService.getTop3Boards (PageRequest.of(page, 3));
     }
 
     @PutMapping("/{id}")

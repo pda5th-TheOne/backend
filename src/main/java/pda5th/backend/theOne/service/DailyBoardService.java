@@ -1,6 +1,8 @@
 package pda5th.backend.theOne.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pda5th.backend.theOne.dto.DailyBoardCreateRequest;
@@ -31,7 +33,7 @@ public class DailyBoardService {
     // C 생성: 게시판 생성하기
     public void createBoard(DailyBoardCreateRequest request) {
         DailyBoard board = DailyBoard.builder()
-                .createdAt(LocalDate.parse(request.createdAt()))
+                .createdAt(request.createdAt())
                 .topic(request.topic())
                 .build();
 
@@ -40,11 +42,11 @@ public class DailyBoardService {
 
     // R 조회: 게시판 모두 가져오기
     // 모든 DailyBoard와 관련된 상위 3개의 Practice, TIL, Question 가져오기
-    public List<DailyBoardDetails> getAllBoardDetails() {
-        List<DailyBoard> dailyBoards = dailyBoardRepository.findAll();
+    public List<DailyBoardDetails> getTop3Boards(Pageable pageable) {
+        Page<DailyBoard> dailyBoardsPage = dailyBoardRepository.findTop3ByOrderByCreatedAtDesc(pageable);
         List<DailyBoardDetails> boardDetailsList = new ArrayList<>();
 
-        for (DailyBoard dailyBoard : dailyBoards) {
+        for (DailyBoard dailyBoard : dailyBoardsPage) {
             List<Practice> top3Practices = practiceRepository.findTop3ByDailyBoardOrderByCreatedAtDesc(dailyBoard);
             List<TIL> top3TILs = tilRepository.findTop3ByDailyBoardOrderByCreatedAtDesc(dailyBoard);
             List<Question> top3Questions = questionRepository.findTop3ByDailyBoardOrderByCreatedAtDesc(dailyBoard);
