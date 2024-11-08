@@ -73,4 +73,16 @@ public class PracticeService {
         return user.getName();
     }
 
+    public String deleteSumbitUser(Integer id, User user) {
+        UsersPractices usersPractices = usersPracticesRepository.findByPracticeIdAndUserId(id, user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("usersPractice not found with id: " + id));
+
+        // 엔티티 삭제
+        usersPracticesRepository.delete(usersPractices);
+
+        // 삭제된 유저의 이름 반환
+        return user.getName();
+
+    }
+
 }
