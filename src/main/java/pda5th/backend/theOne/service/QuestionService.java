@@ -35,4 +35,20 @@ public class QuestionService {
 
         return questionContent;
     }
+
+    // 질문 수정
+    // userId 까지 확인해서 다르면 에러발생 (권한 없음)
+    public String updateQuestion(Integer questionId, User user, String newQuestion) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+
+        if (!question.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not authorized to update this question");
+        }
+
+        question.setContent(newQuestion);
+        questionRepository.save(question);
+
+        return newQuestion;
+    }
 }
