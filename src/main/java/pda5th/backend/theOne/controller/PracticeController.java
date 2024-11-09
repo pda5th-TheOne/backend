@@ -56,14 +56,14 @@ public class PracticeController {
     }
 
     @DeleteMapping("{id}/users_practices")
-    @Operation(summary = "제출 취소", description = "제출취소 버튼을 누르면 로그인된 userId값과 pracId를 비교하여 삭제 후, 삭제된 userName을 반환합니다.")
+    @Operation(summary = "제출 취소", description = "제출취소 버튼을 누르면 로그인된 userId값과 pracId를 비교하여 삭제 후, 삭제된 userId를 반환합니다.")
     public ResponseEntity<String> deleteSumbitUser(
             @PathVariable Integer id,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
         User user = userPrincipal.getUser();
-        String deletedUserName = practiceService.deleteSumbitUser(id, user);
+        int deletedUserId = practiceService.deleteSumbitUser(id, user);
 
-        return ResponseEntity.ok("deleted user: " + deletedUserName);
+        return ResponseEntity.ok("deleted userId: " + deletedUserId);
     }
 }
