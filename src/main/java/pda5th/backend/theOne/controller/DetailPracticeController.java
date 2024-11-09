@@ -21,7 +21,9 @@ import java.util.List;
 public class DetailPracticeController {
     private final DetailPracticeService detailPracticeService;
 
+    // 특정 board에 대한 실습 추가
     @PostMapping("/boards/{id}/practices")
+    @Operation(summary = "실습 추가", description = "실습(+) 버튼을 통한 실습 추가")
     public ResponseEntity<String> createDetailPractice(@PathVariable Integer id, @RequestBody String title) {
         String successTitle = detailPracticeService.createDetailPractice(id, title);
 
@@ -30,6 +32,7 @@ public class DetailPracticeController {
 
     // boradId를 통해 practice 전체 조회해서 {id, title}의 배열 형태로 반환
     @GetMapping("/boards/{id}/practices")
+    @Operation(summary = "특정 Board에 대한 전체 실습 조회", description = "실습들의 {id, title}을 배열 형태로 반환")
     public ResponseEntity<List<PracticeSummaryDto>> getPracticesByBoardId(@PathVariable Integer id) {
         List<PracticeSummaryDto> practices = detailPracticeService.getPracticesByBoardId(id);
 
@@ -38,6 +41,7 @@ public class DetailPracticeController {
 
     // practiceId는 유일하니까 ..
     @PutMapping("/practices/{id}")
+    @Operation(summary = "실습 제목 수정", description = "실습의 title 수정")
     public ResponseEntity<String> updatePracticeTitle(
             @PathVariable Integer id,
             @RequestBody String newTitle) {
@@ -48,6 +52,7 @@ public class DetailPracticeController {
     }
 
     @DeleteMapping("/practices/{id}")
+    @Operation(summary = "실습 삭제", description = "실습 삭제, users_practices에 값이 있어도 cascade 삭제 적용")
     public ResponseEntity<String> deletePractice (
             @PathVariable Integer id) {
 
