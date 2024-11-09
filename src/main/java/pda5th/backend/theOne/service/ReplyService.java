@@ -3,6 +3,7 @@ package pda5th.backend.theOne.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pda5th.backend.theOne.dto.QuestionResponseDto;
+import pda5th.backend.theOne.dto.ReplyResponseDto;
 import pda5th.backend.theOne.entity.Reply;
 import pda5th.backend.theOne.entity.Question;
 import pda5th.backend.theOne.entity.User;
@@ -37,6 +38,17 @@ public class ReplyService {
         replyRepository.save(reply);
 
         return replyContent;
+    }
+
+    // 특정 질문에 대한 댓글 전체 조회
+    public List<ReplyResponseDto> getRepliesByQuestionId(Integer questionId) {
+        // questionId를 통해 댓글 리스트 조회
+        List<Reply> replies = replyRepository.findByQuestionId(questionId);
+
+        // Entity 리스트를 DTO로 변환하여 반환
+        return replies.stream()
+                .map(ReplyResponseDto::fromEntity)
+                .toList();
     }
 
     // 답글 수정

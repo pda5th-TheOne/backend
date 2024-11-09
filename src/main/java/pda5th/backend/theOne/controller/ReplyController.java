@@ -7,7 +7,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import pda5th.backend.theOne.common.security.UserPrincipal;
+import pda5th.backend.theOne.dto.QuestionResponseDto;
+import pda5th.backend.theOne.dto.ReplyResponseDto;
 import pda5th.backend.theOne.entity.User;
+import pda5th.backend.theOne.service.QuestionService;
 import pda5th.backend.theOne.service.ReplyService;
 
 import java.util.List;
@@ -30,6 +33,14 @@ public class ReplyController {
         String createdReply = replyService.createReply(id, user, replyContent);
 
         return ResponseEntity.ok("createdReply: " + createdReply);
+    }
+
+    // 특정 질문에 대한 모든 댓글 조회
+    @GetMapping("/questions/{id}/replies")
+    @Operation(summary = "답글 전체 조회", description = "특정 질문에 대한 모든 답글을 조회합니다.")
+    public ResponseEntity<List<ReplyResponseDto>> getRepliesByQuestionId(@PathVariable Integer id) {
+        List<ReplyResponseDto> replies = replyService.getRepliesByQuestionId(id);
+        return ResponseEntity.ok(replies);
     }
 
     // 답글 수정
