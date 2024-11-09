@@ -7,8 +7,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import pda5th.backend.theOne.common.security.UserPrincipal;
+import pda5th.backend.theOne.dto.QuestionResponseDto;
 import pda5th.backend.theOne.entity.User;
 import pda5th.backend.theOne.service.QuestionService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +32,16 @@ public class QuestionController {
 
         return ResponseEntity.ok("createdQuestion: " + createdQuestion);
     }
+
+    // 특정 게시판에 대한 질문 전체 조회
+    @GetMapping("/boards/{id}/questions")
+    @Operation(summary = "질문 전체 조회", description = "특정 게시판에 대한 질문 배열 형태로 조회 {id, content}")
+    public ResponseEntity<List<QuestionResponseDto>> getQuestionsByBoardId(@PathVariable Integer id) {
+        List<QuestionResponseDto> questions = questionService.getQuestionsByBoardId(id);
+
+        return ResponseEntity.ok(questions);
+    }
+
 
     // 질문 수정
     @PutMapping("/questions/{id}")

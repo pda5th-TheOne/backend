@@ -3,6 +3,7 @@ package pda5th.backend.theOne.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pda5th.backend.theOne.controller.QuestionController;
+import pda5th.backend.theOne.dto.QuestionResponseDto;
 import pda5th.backend.theOne.entity.DailyBoard;
 import pda5th.backend.theOne.entity.Question;
 import pda5th.backend.theOne.entity.User;
@@ -11,6 +12,7 @@ import pda5th.backend.theOne.repository.QuestionRepository;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -65,5 +67,15 @@ public class QuestionService {
         questionRepository.delete(question);
 
         return question.getId();
+    }
+
+    // 특정 게시판에 대한 질문 목록을 가져오는 메서드
+    public List<QuestionResponseDto> getQuestionsByBoardId(Integer boardId) {
+        List<Question> questions = questionRepository.findIdAndContentByBoardId(boardId);
+
+        // Entity 리스트를 DTO 리스트로 변환
+        return questions.stream()
+                .map(QuestionResponseDto::fromEntity)
+                .toList();
     }
 }
