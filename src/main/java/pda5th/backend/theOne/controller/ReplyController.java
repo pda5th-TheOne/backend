@@ -45,4 +45,17 @@ public class ReplyController {
 
         return ResponseEntity.ok("updatedReply: " + updatedReply);
     }
+
+    // 답글 삭제
+    @DeleteMapping("/replies/{id}")
+    @Operation(summary = "답글 삭제", description = "답글 삭제하고 삭제한 내용 반환 (userId가 다른 답글은 삭제 불가 - 권한없음 (에러 처리))")
+    public ResponseEntity<String> deleteReply(
+            @PathVariable Integer id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        User user = userPrincipal.getUser();
+        Integer deletedReplyId = replyService.deleteReply(id, user);
+
+        return ResponseEntity.ok("deletedReplyId: " + deletedReplyId);
+    }
 }

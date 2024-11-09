@@ -55,4 +55,18 @@ public class ReplyService {
         return newReply;
     }
 
+    // 답글 삭제 후 replyId 반환
+    // userId 까지 확인해서 다르면 에러 발생 (권한 없음)
+    public Integer deleteReply(Integer replyId, User user) {
+        Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new RuntimeException("Reply not found"));
+
+        if (!reply.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not authorized to update this reply");
+        }
+
+        replyRepository.delete(reply);
+
+        return reply.getId();
+    }
 }
