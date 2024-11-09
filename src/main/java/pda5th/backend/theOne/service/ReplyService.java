@@ -39,4 +39,20 @@ public class ReplyService {
         return replyContent;
     }
 
+    // 답글 수정
+    // userId 까지 확인해서 다르면 에러발생 (권한 없음)
+    public String updateReply(Integer replyId, User user, String newReply) {
+        Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new RuntimeException("Reply not found"));
+
+        if (!reply.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not authorized to update this reply");
+        }
+
+        reply.setContent(newReply);
+        replyRepository.save(reply);
+
+        return newReply;
+    }
+
 }

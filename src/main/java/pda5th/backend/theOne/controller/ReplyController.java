@@ -32,4 +32,17 @@ public class ReplyController {
         return ResponseEntity.ok("createdReply: " + createdReply);
     }
 
+    // 답글 수정
+    @PutMapping("/replies/{id}")
+    @Operation(summary = "답글 수정", description = "답글을 수정하고 수정한 내용 반환 (userId가 다른 답글은 수정 불가 - 권한없음 (에러 처리)")
+    public ResponseEntity<String> updateReply(
+            @PathVariable Integer id,
+            @RequestBody String newReply,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+        User user = userPrincipal.getUser();
+        String updatedReply = replyService.updateReply(id, user, newReply);
+
+        return ResponseEntity.ok("updatedReply: " + updatedReply);
+    }
 }
