@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import pda5th.backend.theOne.common.security.UserPrincipal;
 import pda5th.backend.theOne.entity.User;
@@ -43,5 +44,16 @@ public class QuestionController {
         return ResponseEntity.ok("updatedQuestion: " + updatedQuestion);
     }
 
+    // 질문 삭제
+    @DeleteMapping("/questions/{id}")
+    @Operation(summary = "질문 삭제", description = "질문 삭제하고 삭제한 내용 반환 (userId가 다른 질문은 삭제 불가 - 권한없음 (에러 처리))")
+    public ResponseEntity<String> deleteQuestion(
+            @PathVariable Integer id,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
+        User user = userPrincipal.getUser();
+        Integer deletedQuestionId = questionService.deleteQuestion(id, user);
+
+        return ResponseEntity.ok("deletedQuestionId: " + deletedQuestionId);
+    }
 }

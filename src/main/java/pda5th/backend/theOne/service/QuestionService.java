@@ -51,4 +51,19 @@ public class QuestionService {
 
         return newQuestion;
     }
+
+    // 질문 삭제 후 questionId 반환
+    // userId 까지 확인해서 다르면 에러 발생 (권한 없음)
+    public Integer deleteQuestion(Integer questionId, User user) {
+        Question question = questionRepository.findById(questionId)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+
+        if (!question.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("You are not authorized to update this question");
+        }
+
+        questionRepository.delete(question);
+
+        return question.getId();
+    }
 }
