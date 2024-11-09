@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pda5th.backend.theOne.entity.DailyBoard;
 import pda5th.backend.theOne.entity.Practice;
+import pda5th.backend.theOne.entity.User;
+import pda5th.backend.theOne.entity.UsersPractices;
 import pda5th.backend.theOne.repository.DailyBoardRepository;
 import pda5th.backend.theOne.repository.DetailPracticeRepository;
 
@@ -45,4 +47,16 @@ public class DetailPracticeService {
 
         return newTitle;
     }
+
+    public Integer deletePractice(Integer id) {
+        Practice practice = detailPracticeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Practice not found"));
+
+        // practiceId 통해 특정 pratice 삭제 (cascade)
+        detailPracticeRepository.delete(practice);
+
+        // 삭제한 PracticeId 반환
+        return id;
+    }
+
 }
