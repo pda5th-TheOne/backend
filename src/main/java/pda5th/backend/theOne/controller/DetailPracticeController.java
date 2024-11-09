@@ -21,5 +21,16 @@ public class DetailPracticeController {
 
         return ResponseEntity.ok("success: " + successTitle);
     }
-    
+
+    // practiceId는 유일하니까 ..
+    @PutMapping("/practices/{practiceId}")
+    public ResponseEntity<String> updatePracticeTitle(
+            @PathVariable Integer practiceId,
+            @RequestBody String newTitle) {
+
+        String updatedTitle = detailPracticeService.updatePracticeTitle(practiceId, newTitle);
+
+        return ResponseEntity.ok("Updated title: " + updatedTitle);
+    }
+
 }

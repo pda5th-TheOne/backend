@@ -33,4 +33,16 @@ public class DetailPracticeService {
 
         return title;
     }
+
+    // practiceId로 title(실습 제목) 수정하기
+    public String updatePracticeTitle(Integer practiceId, String newTitle) {
+        Practice practice = detailPracticeRepository.findById(practiceId)
+                .orElseThrow(() -> new RuntimeException("Practice not found"));
+
+        // title 업데이트
+        practice.setTitle(newTitle);
+        detailPracticeRepository.save(practice);
+
+        return newTitle;
+    }
 }
