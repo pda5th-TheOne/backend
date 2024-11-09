@@ -6,13 +6,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pda5th.backend.theOne.common.jwt.util.JwtUtil;
+import pda5th.backend.theOne.common.security.UserPrincipal;
 import pda5th.backend.theOne.dto.AuthRequest;
 import pda5th.backend.theOne.dto.AuthResponse;
+import pda5th.backend.theOne.dto.UserInfoResponse;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,14 +35,6 @@ public class AuthController {
      */
     @PostMapping("/login")
     @Operation(summary = "로그인 및 JWT 토큰 발급", description = "사용자 이름과 비밀번호를 입력하여 JWT 토큰을 발급받습니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "JWT 토큰 발급 성공",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = AuthResponse.class))),
-            @ApiResponse(responseCode = "401", description = "인증 실패",
-                    content = @Content(mediaType = "application/json")),
-            @ApiResponse(responseCode = "500", description = "서버 오류",
-                    content = @Content(mediaType = "application/json"))
-    })
     public AuthResponse login(@RequestBody AuthRequest authRequest) throws Exception {
         try {
             // 사용자 인증 수행
@@ -60,12 +56,11 @@ public class AuthController {
      * @return 간단한 메시지 (JWT가 유효한 경우)
      */
     @GetMapping("/validate-token")
-    @Operation(summary = "JWT 토큰 유효성 확인", description = "발급받은 JWT 토큰이 유효한지 확인합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "JWT 토큰 유효"),
-            @ApiResponse(responseCode = "401", description = "JWT 토큰 유효하지 않음")
-    })
-    public String validateToken() {
-        return "Token is valid"; // 단순한 검증 결과 반환
+    @Operation(summary = "JWT 토큰 유효성 확인", description = "발급받은 JWT 토큰이 유효한지 확인하고, 사용자 정보를 반환합니다.")
+    public ResponseEntity<UserInfoResponse> validateToken(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+        Integer userId =  userPrincipal.getUser().getId();
+        String username = userPrincipal.getUser().getName();
+        return ResponseEntity.ok(new UserInfoResponse(userId, username));
     }
+
 }
