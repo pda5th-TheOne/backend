@@ -2,6 +2,8 @@ package pda5th.backend.theOne.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pda5th.backend.theOne.dto.PracticeResponseDto;
+import pda5th.backend.theOne.dto.PracticeSummaryDto;
 import pda5th.backend.theOne.entity.DailyBoard;
 import pda5th.backend.theOne.entity.Practice;
 import pda5th.backend.theOne.entity.User;
@@ -10,6 +12,8 @@ import pda5th.backend.theOne.repository.DailyBoardRepository;
 import pda5th.backend.theOne.repository.DetailPracticeRepository;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +38,11 @@ public class DetailPracticeService {
         detailPracticeRepository.save(practice);
 
         return title;
+    }
+
+    // boradId에 대한 Practice 전체 조회
+    public List<PracticeSummaryDto> getPracticesByBoardId(Integer boardId) {
+        return detailPracticeRepository.findPracticeSummariesByBoardId(boardId);
     }
 
     // practiceId로 title(실습 제목) 수정하기

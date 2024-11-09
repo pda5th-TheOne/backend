@@ -7,9 +7,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pda5th.backend.theOne.common.security.UserPrincipal;
 import pda5th.backend.theOne.dto.PracticeResponseDto;
+import pda5th.backend.theOne.dto.PracticeSummaryDto;
 import pda5th.backend.theOne.entity.User;
 import pda5th.backend.theOne.service.DetailPracticeService;
 import pda5th.backend.theOne.service.PracticeService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +26,14 @@ public class DetailPracticeController {
         String successTitle = detailPracticeService.createDetailPractice(id, title);
 
         return ResponseEntity.ok("success: " + successTitle);
+    }
+
+    // boradId를 통해 practice 전체 조회해서 {id, title}의 배열 형태로 반환
+    @GetMapping("/boards/{id}/practices")
+    public ResponseEntity<List<PracticeSummaryDto>> getPracticesByBoardId(@PathVariable Integer id) {
+        List<PracticeSummaryDto> practices = detailPracticeService.getPracticesByBoardId(id);
+
+        return ResponseEntity.ok(practices);
     }
 
     // practiceId는 유일하니까 ..
