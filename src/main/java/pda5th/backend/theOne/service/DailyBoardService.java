@@ -65,7 +65,7 @@ public class DailyBoardService {
         dailyBoardRepository.deleteById(id);
         // 새 보드 생성
         DailyBoard newBoard = DailyBoard.builder()
-                .createdAt(LocalDate.now()) // 현재 날짜로 설정
+                .createdAt(request.createdAt()) // 수정날짜로 수정
                 .topic(request.topic())     // request에서 주제 가져오기
                 .build();
         dailyBoardRepository.save(newBoard);
