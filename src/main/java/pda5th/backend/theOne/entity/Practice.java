@@ -1,5 +1,6 @@
 package pda5th.backend.theOne.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -28,6 +29,8 @@ public class Practice {
 
     @ManyToOne
     @JoinColumn(name = "board_id")
+    //순환참조를 끊기 위해 추가
+    @JsonBackReference
     private DailyBoard dailyBoard; // 게시판 ID 참조
 
     @OneToMany(mappedBy = "practice", cascade = CascadeType.ALL, orphanRemoval = true)
