@@ -1,5 +1,6 @@
 package pda5th.backend.theOne.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class TIL {
 
     @ManyToOne
     @JoinColumn(name = "board_id")
+    @JsonBackReference
     private DailyBoard dailyBoard; // 게시판 ID 참조
 
     @Builder

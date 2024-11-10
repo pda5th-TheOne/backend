@@ -1,5 +1,6 @@
 package pda5th.backend.theOne.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "board_id")
+    @JsonBackReference
     private DailyBoard dailyBoard; // 게시판 ID 참조
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)

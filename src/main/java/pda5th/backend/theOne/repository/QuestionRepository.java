@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
-    // 특정 DailyBoard에 속한 Question 목록 중 상위 3개 조회
-    @Query("SELECT q FROM Question q WHERE q.dailyBoard = :dailyBoard ORDER BY q.createdAt DESC limit 3")
-    List<Question> findTop3ByDailyBoardOrderByCreatedAtDesc(DailyBoard dailyBoard);
+
+    @Query(value = "SELECT * FROM questions q WHERE q.board_id = :boardId ORDER BY q.created_at DESC LIMIT 3", nativeQuery = true)
+    List<Question> findTop3ByDailyBoardOrderByCreatedAtDesc(@Param("boardId") Integer boardId);
 
     // 특정 게시판에 해당하는 모든 질문 조회 (id와 content만 가져오기)
     @Query("SELECT q FROM Question q WHERE q.dailyBoard.id = :boardId")
