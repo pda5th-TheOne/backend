@@ -47,20 +47,12 @@ public class DailyBoardService {
         List<DailyBoardDetails> boardDetailsList = new ArrayList<>();
 
         for (DailyBoard dailyBoard : dailyBoardsPage) {
-            // 특정 DailyBoard에 속한 모든 Practice, TIL, Question 가져오기
-//            List<Practice> practices = practiceRepository.findByDailyBoardOrderByCreatedAtDesc(dailyBoard);
-//            List<TIL> tils = tilRepository.findByDailyBoardOrderByCreatedAtDesc(dailyBoard);
-//            List<Question> questions = questionRepository.findByDailyBoardOrderByCreatedAtDesc(dailyBoard);
-//            DailyBoardDetails detailsDTO = new DailyBoardDetails(dailyBoard, practices, tils, questions);
-
-
             List<Practice> top3Practices = practiceRepository.findTop3ByDailyBoardOrderByCreatedAtDesc(dailyBoard.getId());
             List<TIL> top3TILs = tilRepository.findTop3ByDailyBoardOrderByCreatedAtDesc(dailyBoard.getId());
             List<Question> top3Questions = questionRepository.findTop3ByDailyBoardOrderByCreatedAtDesc(dailyBoard.getId());
 
-            DailyBoardDetails detailsDTO = new DailyBoardDetails(dailyBoard, top3Practices, top3TILs, top3Questions);
+            DailyBoardDetails detailsDTO = DailyBoardDetails.fromEntity(dailyBoard, top3Practices, top3TILs, top3Questions);
             boardDetailsList.add(detailsDTO);
-
         }
         return boardDetailsList;
     }
