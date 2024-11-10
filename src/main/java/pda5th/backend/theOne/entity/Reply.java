@@ -1,5 +1,6 @@
 package pda5th.backend.theOne.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class Reply {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
+    @JsonBackReference
     private Question question; // 질문 댓글 ID 참조
 
     @ManyToOne
