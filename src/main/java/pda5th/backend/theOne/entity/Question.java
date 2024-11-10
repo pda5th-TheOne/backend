@@ -3,6 +3,7 @@ package pda5th.backend.theOne.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -30,4 +31,7 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "board_id")
     private DailyBoard dailyBoard; // 게시판 ID 참조
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Reply> replies; // 연관된 Replies -> cascade 삭제를 위함
 }
