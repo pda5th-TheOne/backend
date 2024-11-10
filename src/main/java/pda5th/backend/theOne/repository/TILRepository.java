@@ -21,7 +21,9 @@ public interface TILRepository extends JpaRepository<TIL, Integer> {
     List<TIL> findTop3ByDailyBoardOrderByCreatedAtDesc(@Param("boardId") Integer boardId);
 
     // 특정 TIL을 ID로 조회
-    Optional<TIL> findById(Integer id);
+//    Optional<TIL> findById(Integer id);
+
+    List<TIL> findByDailyBoard(DailyBoard board);
 
     // 모든 TIL을 조회
     List<TIL> findAll();
