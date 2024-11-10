@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import pda5th.backend.theOne.common.security.UserPrincipal;
 import pda5th.backend.theOne.dto.PracticeResponseDto;
+import pda5th.backend.theOne.dto.PracticeUpdateRequest;
 import pda5th.backend.theOne.entity.User;
 import pda5th.backend.theOne.service.PracticeService;
 
@@ -27,8 +28,8 @@ public class PracticeController {
     @Operation(summary = "문제 내용 수정", description = "편집 버튼을 누른 후, 문제 내용을 수정하고 완료버튼을 눌러 문제 내용을 수정합니다.")
     public ResponseEntity<String> updateAssignment(
             @PathVariable Integer id,
-            @RequestBody String newAssignment) {
-        String updatedAssignment = practiceService.updateAssignment(id, newAssignment);
+            @RequestBody PracticeUpdateRequest request) {
+        String updatedAssignment = practiceService.updateAssignment(id, request.newContent());
 
         return ResponseEntity.ok("Updated assignment: " + updatedAssignment);
     }
@@ -37,8 +38,8 @@ public class PracticeController {
     @Operation(summary = "모범답안 내용 수정", description = "편집 버튼을 누른 후, 문제 내용을 수정하고 완료버튼을 눌러 모범답안 내용을 수정합니다.")
     public ResponseEntity<String> updateAnswer(
             @PathVariable Integer id,
-            @RequestBody String newAnswer) {
-        String updatedAnswer = practiceService.updateAnswer(id, newAnswer);
+            @RequestBody PracticeUpdateRequest request) {
+        String updatedAnswer = practiceService.updateAnswer(id, request.newContent());
 
         return ResponseEntity.ok("updated answer: " + updatedAnswer);
     }

@@ -5,7 +5,12 @@ import lombok.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "users_practices")
+@Table(
+        name = "users_practices",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"prac_id", "user_id"})
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
