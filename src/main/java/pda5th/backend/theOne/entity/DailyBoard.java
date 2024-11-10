@@ -1,5 +1,6 @@
 package pda5th.backend.theOne.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -23,6 +24,8 @@ public class DailyBoard {
     private String topic; // 수업 주제
 
     @OneToMany(mappedBy = "dailyBoard", cascade = CascadeType.ALL)
+    //순환참조를 꾾기 위해 추가
+    @JsonManagedReference
     private List<Practice> practices;
 
     @OneToMany(mappedBy = "dailyBoard", cascade = CascadeType.ALL)
